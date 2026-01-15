@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Welcome to Kelp</title>
+<style>
+    * { box-sizing: border-box; }
+    .color, a {
+        color: #0298c3;
+    }
+    .color-alt {
+        color: #e1fcd1;
+    }
+    html {
+        padding: 0;
+        background-color: #e1fcd1;
+        height: 100%;
+    }
+    body {
+        width: 70%;
+        min-width: 700px;
+        min-height: 100%;
+        color: #082c26;
+        font-family: Helvetica, sans-serif;
+        background-color: white;
+        margin: 0 auto;
+        padding: 10px 40px;
+        line-height: 1.3;
+    }
+    h1, h2 {
+        font-size: 3rem;
+        font-weight: normal;
+        margin: 15px auto;
+        text-align: center;
+    }
+    h2 {
+        font-size: 1.6rem;
+    }
+    p {
+        margin: 10px auto;
+    }
+    table.kelp {
+        width: 100%;
+        table-layout: fixed;
+        margin: 10px auto;
+    }
+    table.kelp thead tr th {
+        text-align: left;
+    }
+    header.kelp {
+        display: flex;
+    }
+    header.kelp > * {
+        display: block;
+        align-self: center;
+    }
+    header.kelp img {
+        width: 30%;
+    }
+</style>
+<link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/Kelp-framework/Art/master/logo/logo.png">
+</head>
+
+<body>
+    <header class="kelp">
+        <img src="https://raw.githubusercontent.com/Kelp-framework/Art/master/logo/logo.png" alt="Kelp framework logo">
+        <h1>
+        Welcome to the Kelp web framework!
+        </h1>
+    </header>
+    <h2>
+        [% name %] is ready to grow
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="width: 1.5rem; height: auto" viewbox="0 0 20 20">
+        <g stroke="#2ca02c" stroke-width="2.3" fill="rgba(0,0,0,0)">
+        <circle cx="10" cy="10" r="8.5"/>
+        <path d="M5.2,10 8.5,13.4 14.8,7.2"/>
+        </g>
+        </svg>
+    </h2>
+
+    <p>
+        Your application has been configured successfully and is now operational. Thank you for choosing Kelp.
+    </p>
+    <p>
+        This document has been rendered from <i>views/welcome.tt</i> using <a href="https://metacpan.org/pod/Template::Tiny" title="Template::Tiny on metacpan">Template::Tiny</a>.
+    </p>
+    <p>
+        Please consult <a href="https://metacpan.org/pod/Kelp::Manual" title="Kelp::Manual on metacpan">our extensive manual</a> to get started. <a href="https://metacpan.org/pod/Kelp::Manual::Cookbook" title="Kelp::Manual::Cookbook on metacpan">The cookbook</a> is worth looking into if you're dealing with a more difficult problem.
+    </p>
+
+    <hr class="color-alt">
+    <p>
+        The list of registered routes is printed below:
+    </p>
+    <table class="kelp">
+    <thead>
+        <tr>
+            <th class="color">Method</th>
+            <th class="color">Route</th>
+            <th class="color">Handler</th>
+        </tr>
+    </thead>
+    <tbody>
+        [% FOREACH route IN routes %]
+        <tr>
+            <td>[% route.method %]</td>
+            <td><a href="[% route.route %]">[% route.route %]</a></td>
+            <td>[% route.handler %]</td>
+        </tr>
+        [% END %]
+    </tbody>
+    </table>
+
+    <hr class="color-alt">
+    <p>
+        The current configuration is printed below:
+    </p>
+    <pre><code>[% config %]</code></pre>
+</body>
+
+</html>
+
