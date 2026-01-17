@@ -19,10 +19,11 @@
         q{},
         q{},
         {
-            RaiseError     => 1,
-            PrintError     => 0,
-            AutoCommit     => 1,
-            sqlite_unicode => 1,
+            RaiseError                       => 1,
+            PrintError                       => 0,
+            AutoCommit                       => 1,
+            sqlite_unicode                   => 1,
+            sqlite_allow_multiple_statements => 1,
         },
     ],
 
