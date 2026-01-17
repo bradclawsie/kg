@@ -2,13 +2,13 @@ package Kg;
 use v5.42;
 use strictures 2;
 use Kelp::Base 'Kelp';
+use Moo;
 
 our $VERSION   = '0.0.1';
 our $AUTHORITY = 'cpan:bclawsie';
 
-sub build {
-  my $self = shift;
-  my $r    = $self->routes;
+sub build ($self) {
+  my $r = $self->routes;
 
   $r->add(qw{/}, 'test');
 

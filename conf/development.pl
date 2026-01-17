@@ -24,5 +24,23 @@
             ],
         },
     },
+
+    dbi => [
+        'dbi:SQLite:dbname=./db/dev.sqlite',
+        q{},
+        q{},
+        {
+            RaiseError     => 1,
+            PrintError     => 0,
+            AutoCommit     => 1,
+            sqlite_unicode => 1,
+        },
+    ],
+
+    dbh_pragmas => [
+        'PRAGMA foreign_keys = ON;',
+        'PRAGMA journal_mode = WAL;',
+        'PRAGMA synchronous = NORMAL',
+    ],
 };
 

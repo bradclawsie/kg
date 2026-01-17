@@ -8,6 +8,7 @@ PERLCRITIC := "perlcritic" + " --profile " + justfile_directory() / ".perlcritic
 PERLIMPORTS := "perlimports" + " -i --no-preserve-unused" + " --libs lib" + " --ignore-modules-filename " + justfile_directory() / ".perlimports-ignore" + " -f"
 PERLTIDY := 'perltidier -i=2 -pt=2 -bt=2 -pvt=2 -b -cs '
 YATH := 'yath --max-open-jobs=1000'
+SCHEMA := justfile_directory() / "sql" / "schema.sql"
 
 default:
     @just --list
@@ -46,8 +47,8 @@ critic:
       find t -name \*.t -print0 | xargs -0 {{ PERLCRITIC }} --theme=tests
 
 daemon:
-    @export PERL5LIB={{ PERL5LIB_LIB }}; KELP_MODE=development;\
-      mkdir -p log && plackup app.psgi
+    @export PERL5LIB={{ PERL5LIB_LIB }}; KELP_MODE=development SCHEMA={{ SCHEMA }};\
+      mkdir -p log && mkdir -p db && plackup app.psgi
 
 imports:
     @export PERL5LIB={{ PERL5LIB_LIB }};\
@@ -64,7 +65,7 @@ run *CMD:
       {{ CMD }}
 
 test:
-    @export PERL5LIB={{ PERL5LIB_LIB }} KELP_MODE=test;\
+    @export PERL5LIB={{ PERL5LIB_LIB }} KELP_MODE=test SCHEMA={{ SCHEMA }};\
       find t -name \*.t -print0 | xargs -0 {{ YATH }}
 
 tidy:
@@ -78,5 +79,5 @@ tidy:
 
 # Run a single test; e.g. "just yath t/00-test.t".
 yath TEST:
-    @export PERL5LIB={{ PERL5LIB_LIB }} KELP_MODE=test;\
+    @export PERL5LIB={{ PERL5LIB_LIB }} KELP_MODE=test SCHEMA={{ SCHEMA }};\
       {{ YATH }} {{ TEST }}
