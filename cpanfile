@@ -13,6 +13,7 @@ requires 'indirect';
 requires 'List::Util';
 requires 'multidimensional';
 requires 'Moo';
+requires 'Path::Tiny';
 requires 'Perl::Critic';
 requires 'Perl::Critic::Bangs';
 requires 'Perl::Critic::Community';
