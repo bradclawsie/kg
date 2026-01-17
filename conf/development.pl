@@ -1,5 +1,12 @@
 # Options specific to development only
 {
+    modules => [
+        'Template',
+        'JSON',
+        'Logger',
+        'Runtime::Development',
+    ],
+
     # Add StackTrace in development
     '+middleware'   => ['StackTrace'],
     middleware_init => {
@@ -25,15 +32,18 @@
         },
     },
 
+    db_file => './db/development.db',
+
     dbi => [
-        'dbi:SQLite:dbname=./db/dev.sqlite',
+        'dbi:SQLite:dbname=./db/development.db',
         q{},
         q{},
         {
-            RaiseError     => 1,
-            PrintError     => 0,
-            AutoCommit     => 1,
-            sqlite_unicode => 1,
+            RaiseError                       => 1,
+            PrintError                       => 0,
+            AutoCommit                       => 1,
+            sqlite_unicode                   => 1,
+            sqlite_allow_multiple_statements => 1,
         },
     ],
 
