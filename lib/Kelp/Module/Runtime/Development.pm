@@ -6,7 +6,6 @@ use Path::Tiny qw( path );
 
 use Moo;
 extends 'Kelp::Module';
-use namespace::clean;
 
 our $VERSION   = '0.0.1';
 our $AUTHORITY = 'cpan:bclawsie';

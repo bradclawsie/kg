@@ -2,11 +2,11 @@ package Kg;
 use v5.42;
 use strictures 2;
 use Carp qw( croak );
-use DBI;
+use DBI ();
 use Types::Standard qw( InstanceOf );
-use Kelp::Base 'Kelp';
+
+use parent 'Kelp';
 use Moo;
-use namespace::clean;
 
 our $VERSION   = '0.0.1';
 our $AUTHORITY = 'cpan:bclawsie';
