@@ -51,6 +51,13 @@ ok(
 ok(
   dies {
     my $c = TestBase->new;
+    $c->mtime(7);
+  },
+) or note($EVAL_ERROR);
+
+ok(
+  dies {
+    my $c = TestBase->new;
     $c->role($ROLE_ADMIN);
   },
 ) or note($EVAL_ERROR);
@@ -67,6 +74,7 @@ ok(
     my $c = TestBase->new;
     $c->signature(random_v4uuid);
     $c->status($STATUS_ACTIVE);
+    $c->ctime(time);
     $c->mtime(time);
   },
 ) or note($EVAL_ERROR);

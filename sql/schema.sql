@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS user (
     display_name_digest TEXT NOT NULL CHECK (display_name_digest != ''),
     email TEXT NOT NULL CHECK (email != ''),
     email_digest TEXT NOT NULL CHECK (email_digest != ''),
-    key_version TEXT NOT NULL,
+    key_version TEXT NOT NULL CHECK (key_version != '00000000-0000-0000-0000-000000000000'),
     org TEXT NOT NULL CHECK (org != '00000000-0000-0000-0000-000000000000'),
     password TEXT NOT NULL CHECK (password LIKE '$argon2%'),
     id TEXT UNIQUE NOT NULL CHECK (id != '00000000-0000-0000-0000-000000000000'),

@@ -18,9 +18,9 @@ use Moo::Role;
 our $VERSION   = '0.0.1';
 our $AUTHORITY = 'cpan:bclawsie';
 
-has ctime => (
-  is      => 'ro',
-  isa     => PositiveOrZeroInt,
+has [qw( ctime mtime )] => (
+  is      => 'rw',
+  isa     => PositiveOrZeroInt->where('$_ == 0 || $_ > 1768753518'),
   default => sub { 0 },
 );
 
@@ -31,7 +31,7 @@ has id => (
   default => Uuid->generator,
 );
 
-has mtime => (
+has insert_order => (
   is      => 'rw',
   isa     => PositiveOrZeroInt,
   default => sub { 0 },
