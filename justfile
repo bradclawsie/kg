@@ -47,8 +47,8 @@ critic:
       find t -name \*.t -print0 | xargs -0 {{ PERLCRITIC }} --theme=tests
 
 daemon:
-    @export PERL5LIB={{ PERL5LIB_LIB }} KELP_MODE=development SCHEMA={{ SCHEMA }};\
-      mkdir -p log && mkdir -p db && plackup app.psgi
+    @export PERL5LIB={{ PERL5LIB_LIB }} SCHEMA={{ SCHEMA }};\
+      mkdir -p log && mkdir -p db && plackup -E development app.psgi
 
 imports:
     @export PERL5LIB={{ PERL5LIB_LIB }};\
@@ -65,7 +65,7 @@ run *CMD:
       {{ CMD }}
 
 test:
-    @export PERL5LIB={{ PERL5LIB_LIB }} KELP_MODE=test SCHEMA={{ SCHEMA }};\
+    @export PERL5LIB={{ PERL5LIB_LIB }} SCHEMA={{ SCHEMA }};\
       find t -name \*.t -print0 | xargs -0 {{ YATH }}
 
 tidy:
@@ -79,5 +79,5 @@ tidy:
 
 # Run a single test; e.g. "just yath t/00-test.t".
 yath TEST:
-    @export PERL5LIB={{ PERL5LIB_LIB }} KELP_MODE=test SCHEMA={{ SCHEMA }};\
+    @export PERL5LIB={{ PERL5LIB_LIB }} SCHEMA={{ SCHEMA }};\
       {{ YATH }} {{ TEST }}
