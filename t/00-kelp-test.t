@@ -1,9 +1,9 @@
 use Kelp::Base -strict;
-use Kelp::Test;
+use Kelp::Test ();
 use v5.42;
 use strictures 2;
-use HTTP::Request::Common;
-use Kg;
+use HTTP::Request::Common qw( GET );
+use Kg ();
 use Test2::V0 qw( done_testing );
 
 my $app = Kg->new(mode => 'test');
