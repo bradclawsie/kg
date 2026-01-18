@@ -1,8 +1,8 @@
 package Kg;
 use v5.42;
 use strictures 2;
-use Carp qw( croak );
-use DBI ();
+use Carp            qw( croak );
+use DBI             ();
 use Types::Standard qw( InstanceOf );
 
 use parent 'Kelp';
