@@ -3319,6 +3319,15 @@ DISTRIBUTIONS
       Exporter::Tiny 1.006000
       ExtUtils::MakeMaker 6.17
       perl 5.008001
+  Types-UUID-0.004
+    pathname: T/TO/TOBYINK/Types-UUID-0.004.tar.gz
+    provides:
+      Types::UUID 0.004
+    requirements:
+      ExtUtils::MakeMaker 6.17
+      Type::Tiny 1.000000
+      UUID::Tiny 1.02
+      perl 5.008
   URI-5.34
     pathname: O/OA/OALDERS/URI-5.34.tar.gz
     provides:

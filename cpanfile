@@ -27,4 +27,5 @@ requires 'Term::ReadLine::Gnu';
 requires 'Test2::Harness';
 requires 'Test2::Suite';
 requires 'Types::Common';
+requires 'Types::UUID';
 requires 'UUID';
