@@ -5,11 +5,12 @@ use Carp                  qw( croak );
 use Crypt::Digest::SHA256 qw( sha256_hex );
 use Crypt::Misc           qw( random_v4uuid );
 use Crypt::PK::Ed25519    ();
+use Time::Piece           ();
 use Types::Common::String qw( NonEmptyStr );
 use Types::Standard       qw( Maybe );
 use Types::UUID           qw( Uuid );
 use Kg::Crypt::Password   qw( rand_password );
-use Kg::Model::Attribute  qw( $ROLE_TEST $STATUS_ACTIVE );
+use Kg::Model::Attribute  qw( $DATE $ROLE_TEST $STATUS_ACTIVE );
 
 use Moo;
 with 'Kg::Model::Base';
@@ -119,13 +120,25 @@ around BUILDARGS => sub {
   return $params;
 };
 
+sub TO_JSON ($self) {
+  return {
+    id             => $self->{id},
+    name           => $self->{display_name},
+    email          => $self->{email},
+    org            => $self->{org},
+    ed25519_public => $self->{ed25519_public},
+    ctime          => Time::Piece->gmtime($self->{ctime})->strftime($DATE),
+    mtime          => Time::Piece->gmtime($self->{mtime})->strftime($DATE),
+  };
+}
+
 # for testing
 sub random ($class, %args) {
   return $class->new(
-    id             => random_v4uuid,
     display_name   => $args{display_name}   // random_v4uuid,
     ed25519_public => $args{ed25519_public} // undef,
     email          => $args{email}          // random_v4uuid,
+    id             => $args{id}             // random_v4uuid,
     org            => $args{org}            // random_v4uuid,
     password       => $args{password}       // rand_password,
     role           => $args{role}           // $ROLE_TEST,
