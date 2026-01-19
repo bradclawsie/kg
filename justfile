@@ -1,14 +1,19 @@
 set shell := ["bash", "-c"]
 
-PERL5LIB_BASE := justfile_directory() / "local" / "lib" / "perl5"
-PERL5LIB_LIB := PERL5LIB_BASE + ":" + justfile_directory() / "lib"
-LOCAL_BIN := justfile_directory() / "local" / "bin"
-export PATH := LOCAL_BIN + ":" + env("PATH")
-PERLCRITIC := "perlcritic" + " --profile " + justfile_directory() / ".perlcritic"
-PERLIMPORTS := "perlimports" + " -i --no-preserve-unused" + " --libs lib" + " --ignore-modules-filename " + justfile_directory() / ".perlimports-ignore" + " -f"
-PERLTIDY := 'perltidier -i=2 -pt=2 -bt=2 -pvt=2 -b -cs '
-YATH := 'yath --max-open-jobs=1000'
-SCHEMA := justfile_directory() / "sql" / "schema.sql"
+PWD           := justfile_directory()
+
+PERL5LIB_BASE := PWD / "local" / "lib" / "perl5"
+PERL5LIB_LIB  := PERL5LIB_BASE + ":" + PWD / "lib"
+
+PERLCRITIC    := "perlcritic" + " --profile " + PWD / ".perlcritic"
+PERLIMPORTS   := "perlimports -i --config-file=" + PWD / ".perlimports.toml"
+PERLTIDY      := 'perltidier'
+YATH          := 'yath'
+
+SCHEMA        := PWD / "sql" / "schema.sql"
+
+LOCAL_BIN     := PWD / "local" / "bin"
+export PATH   := LOCAL_BIN + ":" + env("PATH")
 
 default:
     @just --list
