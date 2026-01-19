@@ -19,22 +19,25 @@ our $VERSION   = '0.0.1';
 our $AUTHORITY = 'cpan:bclawsie';
 
 has [qw( ctime mtime )] => (
-  is      => 'rw',
-  isa     => PositiveOrZeroInt->where('$_ == 0 || $_ > 1768753518'),
-  default => sub { 0 },
+  is       => 'rw',
+  isa      => PositiveOrZeroInt->where('$_ == 0 || $_ > 1768753518'),
+  required => false,       # db populated on insert/update
+  default  => sub { 0 },
 );
 
 has id => (
-  is      => 'ro',
-  isa     => Uuid,
-  coerce  => 1,
-  default => Uuid->generator,
+  is       => 'ro',
+  isa      => Uuid,
+  required => true,
+  coerce   => 1,
+  default  => Uuid->generator,
 );
 
 has insert_order => (
-  is      => 'rw',
-  isa     => PositiveOrZeroInt,
-  default => sub { 0 },
+  is       => 'rw',
+  isa      => PositiveOrZeroInt,
+  required => false,               # db populated on insert
+  default  => sub { 0 },
 );
 
 has role => (
@@ -48,20 +51,23 @@ has role => (
       ]$}x;
     return true;
   },
-  default => sub { $ROLE_NORMAL },
+  required => false,
+  default  => sub { $ROLE_NORMAL },
 );
 
 has schema_version => (
-  is      => 'ro',
-  isa     => PositiveOrZeroInt,
-  default => sub { 0 },
+  is       => 'ro',
+  isa      => PositiveOrZeroInt,
+  required => false,
+  default  => sub { 0 },
 );
 
 has signature => (
-  is      => 'rw',
-  isa     => Uuid,
-  coerce  => 1,
-  default => Uuid->generator,
+  is       => 'rw',
+  isa      => Uuid,
+  required => false,             # db populated on insert/update
+  coerce   => 1,
+  default  => Uuid->generator,
 );
 
 has status => (
@@ -75,7 +81,8 @@ has status => (
       ]$}x;
     return true;
   },
-  default => sub { $STATUS_UNCONFIRMED },
+  required => false,
+  default  => sub { $STATUS_UNCONFIRMED },
 );
 
 __END__

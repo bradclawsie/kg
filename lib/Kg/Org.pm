@@ -16,15 +16,17 @@ our $AUTHORITY = 'cpan:bclawsie';
 our $SCHEMA_VERSION = 0;
 
 has name => (
-  is  => 'ro',
-  isa => NonEmptyStr,
+  is       => 'ro',
+  isa      => NonEmptyStr,
+  required => true,
 );
 
 has owner => (
-  is      => 'rw',
-  isa     => Uuid,
-  coerce  => 1,
-  default => Uuid->generator,
+  is       => 'rw',
+  isa      => Uuid,
+  required => true,
+  coerce   => 1,
+  default  => Uuid->generator,
 );
 
 sub TO_JSON ($self) {
