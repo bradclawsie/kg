@@ -21,25 +21,28 @@ our $AUTHORITY = 'cpan:bclawsie';
 our $SCHEMA_VERSION = 0;
 
 has display_name => (
-  is      => 'rw',
-  isa     => NonEmptyStr,
-  trigger => sub ($self, $v) {
+  is       => 'rw',
+  isa      => NonEmptyStr,
+  required => true,
+  trigger  => sub ($self, $v) {
     $self->_set_display_name_digest(sha256_hex($v));
   },
 );
 
 has display_name_digest => (
-  is     => 'ro',
-  isa    => NonEmptyStr,
-  writer => '_set_display_name_digest',
+  is       => 'ro',
+  isa      => NonEmptyStr,
+  required => false,
+  writer   => '_set_display_name_digest',
 );
 
 # Will be set only if caller has not provided ed25519_public.
 # Return this to caller scope and then destroy object promptly.
 has ed25519_private => (
-  is      => 'ro',
-  isa     => Maybe [NonEmptyStr],
-  trigger => sub ($self, $v) {
+  is       => 'ro',
+  isa      => Maybe [NonEmptyStr],
+  required => false,
+  trigger  => sub ($self, $v) {
     try {
       my $k = Crypt::PK::Ed25519->new(\$v);
       croak 'not private key' unless $k->is_private;
@@ -51,9 +54,10 @@ has ed25519_private => (
 );
 
 has ed25519_public => (
-  is      => 'rw',
-  isa     => NonEmptyStr,
-  trigger => sub ($self, $v) {
+  is       => 'rw',
+  isa      => NonEmptyStr,
+  required => true,
+  trigger  => sub ($self, $v) {
     try {
       my $k = Crypt::PK::Ed25519->new(\$v);
       croak 'not public key' if $k->is_private;
@@ -66,43 +70,49 @@ has ed25519_public => (
 );
 
 has ed25519_public_digest => (
-  is     => 'ro',
-  isa    => NonEmptyStr,
-  writer => '_set_ed25519_public_digest',
+  is       => 'ro',
+  isa      => NonEmptyStr,
+  required => false,
+  writer   => '_set_ed25519_public_digest',
 );
 
 has email => (
-  is      => 'ro',
-  isa     => NonEmptyStr,
-  trigger => sub ($self, $v) {
+  is       => 'ro',
+  isa      => NonEmptyStr,
+  required => true,
+  trigger  => sub ($self, $v) {
     $self->_set_email_digest(sha256_hex($v));
   },
 );
 
 has email_digest => (
-  is     => 'ro',
-  isa    => NonEmptyStr,
-  writer => '_set_email_digest',
+  is       => 'ro',
+  isa      => NonEmptyStr,
+  required => false,
+  writer   => '_set_email_digest',
 );
 
 has key_version => (
-  is      => 'rw',
-  isa     => Uuid,
-  coerce  => 1,
-  default => sub { '00000000-0000-0000-0000-000000000000' },
+  is       => 'rw',
+  isa      => Uuid,
+  required => false,    # only needed at db insert/update
+  coerce   => 1,
+  default  => sub { '00000000-0000-0000-0000-000000000000' },
 );
 
 has org => (
-  is      => 'ro',
-  isa     => Uuid,
-  coerce  => 1,
-  default => sub { '00000000-0000-0000-0000-000000000000' },
+  is       => 'ro',
+  isa      => Uuid,
+  required => true,
+  coerce   => 1,
+  default  => sub { '00000000-0000-0000-0000-000000000000' },
 );
 
 has password => (
-  is      => 'rw',
-  isa     => NonEmptyStr->where('$_ =~ m/\$argon2/'),
-  default => sub { rand_password },
+  is       => 'rw',
+  isa      => NonEmptyStr->where('$_ =~ m/\$argon2/'),
+  required => true,
+  default  => sub { rand_password },
 );
 
 around BUILDARGS => sub {
