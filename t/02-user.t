@@ -2,56 +2,75 @@ use v5.42;
 use strictures 2;
 use Crypt::Digest::SHA256   qw( sha256_hex );
 use Crypt::Misc             qw( random_v4uuid );
+use Crypt::PK::Ed25519      ();
 use English                 qw(-no_match_vars);
-use Test2::V0               qw( done_testing is note ok );
+use Test2::V0               qw( done_testing is isnt note ok subtest );
 use Test2::Tools::Exception qw( dies lives );
 use Kg::User                ();
 
 our $VERSION   = '0.01';
 our $AUTHORITY = 'cpan:bclawsie';
 
-ok(
-  lives {
-    my ($u, undef) = Kg::User->random;
+subtest 'valid User' => sub {
+  ok(
+    lives {
+      my $u = Kg::User->random;
 
-    is($u->display_name_digest,   sha256_hex($u->display_name));
-    is($u->ed25519_public_digest, sha256_hex($u->ed25519_public));
-    is($u->email_digest,          sha256_hex($u->email));
+      is($u->display_name_digest,   sha256_hex($u->display_name));
+      is($u->ed25519_public_digest, sha256_hex($u->ed25519_public));
+      is($u->email_digest,          sha256_hex($u->email));
 
-    $u->display_name(random_v4uuid);
-    is($u->display_name_digest, sha256_hex($u->display_name));
+      isnt($u->ed25519_private, undef);
 
-    $u->ed25519_public(random_v4uuid);
-    is($u->ed25519_public_digest, sha256_hex($u->ed25519_public));
-  },
-) or note($EVAL_ERROR);
+      $u->display_name(random_v4uuid);
+      is($u->display_name_digest, sha256_hex($u->display_name));
 
-ok(
-  dies {
-    my ($u, undef) = Kg::User->random;
-    $u->display_name_digest(q{});
-  },
-) or note($EVAL_ERROR);
+      my $pk = Crypt::PK::Ed25519->new->generate_key;
+      $u->ed25519_public($pk->export_key_pem('public'));
+      is($u->ed25519_public_digest, sha256_hex($u->ed25519_public));
+    },
+  ) or note($EVAL_ERROR);
 
-ok(
-  dies {
-    my ($u, undef) = Kg::User->random;
-    $u->ed25519_public_digest(q{});
-  },
-) or note($EVAL_ERROR);
+  ok(
+    lives {
+      my $pk = Crypt::PK::Ed25519->new->generate_key;
+      my $u = Kg::User->random(ed25519_public => $pk->export_key_pem('public'));
 
-ok(
-  dies {
-    my ($u, undef) = Kg::User->random;
-    $u->email(q{});
-  },
-) or note($EVAL_ERROR);
+      is($u->ed25519_public_digest, sha256_hex($u->ed25519_public));
+      is($u->ed25519_private,       undef);
+    },
+  ) or note($EVAL_ERROR);
 
-ok(
-  dies {
-    my ($u, undef) = Kg::User->random;
-    $u->password(q{});
-  },
-) or note($EVAL_ERROR);
+  done_testing;
+};
+
+subtest 'invalid attr mutations' => sub {
+
+  ok(
+    dies {
+      Kg::User->random->display_name_digest(q{});
+    },
+  ) or note($EVAL_ERROR);
+
+  ok(
+    dies {
+      Kg::User->random->ed25519_public_digest(q{});
+    },
+  ) or note($EVAL_ERROR);
+
+  ok(
+    dies {
+      Kg::User->random->email(q{});
+    },
+  ) or note($EVAL_ERROR);
+
+  ok(
+    dies {
+      Kg::User->random->password(q{});
+    },
+  ) or note($EVAL_ERROR);
+
+  done_testing;
+};
 
 done_testing;
