@@ -52,5 +52,8 @@
         'PRAGMA journal_mode = WAL;',
         'PRAGMA synchronous = NORMAL',
     ],
+
+    # ROLE_TEST
+    default_role => 3,
 };
 
