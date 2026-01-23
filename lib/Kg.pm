@@ -25,6 +25,12 @@ has dbh => (
 );
 
 sub build ($self, %args) {
+
+  # check conf values not implicitly checked by Moo attr construction
+  for my $k (qw( default_role )) {
+    croak "conf key $k not set" unless (defined $self->config($k));
+  }
+
   my $r = $self->routes;
 
   $r->add(qw{/}, 'test');
