@@ -1,63 +1,13 @@
 package Kg;
 use v5.42;
 use strictures 2;
-use Carp            qw( croak );
-use DBI             ();
-use Types::Standard qw( CodeRef InstanceOf );
-use Types::UUID     qw( Uuid );
 
 use parent 'Kelp';
-use Moo;
 
 our $VERSION   = '0.0.1';
 our $AUTHORITY = 'cpan:bclawsie';
 
-has dbh => (
-  is      => 'ro',
-  isa     => InstanceOf ['DBI::db'],
-  lazy    => true,
-  default => sub($self) {
-    my $dbh = DBI->connect(@{$self->config('dbi')}) || croak $DBI::errstr;
-    for my $pragma (@{$self->config('dbh_pragmas')}) {
-      $dbh->do($pragma) || croak $!;
-    }
-    return $dbh;
-  },
-);
-
-has get_key => (
-  is       => 'rw',
-  isa      => CodeRef,
-  required => true,
-  lazy     => true,
-  default  => sub { croak 'get_key not set' },
-);
-
-has encryption_key_version => (
-  is       => 'rw',
-  isa      => Uuid,
-  required => true,
-  lazy     => true,
-  coerce   => 1,
-  default  => undef,
-);
-
-has signing_key => (
-  is       => 'ro',
-  isa      => Uuid,
-  required => true,
-  default  => Uuid->generator,
-);
-
 sub build ($self, %args) {
-
-  # check conf values not implicitly checked by Moo attr construction
-  #
-  # see corresponding file in conf/
-  for my $k (qw( api_version default_role repository_base )) {
-    croak "conf key $k not set" unless (defined $self->config($k));
-  }
-
   my $r = $self->routes;
 
   $r->add(qw{/}, 'test');

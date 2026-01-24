@@ -58,6 +58,6 @@
     # ROLE_TEST
     default_role => 3,
 
-    repository_bsae => '/tmp',
+    repository_base => '/tmp',
 };
 
