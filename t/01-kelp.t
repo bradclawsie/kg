@@ -13,7 +13,13 @@ subtest 'test template' => sub {
   $t->request(GET '/')
     ->code_is(200)
     ->content_type_is('text/html')
-    ->content_like(qr/test/);
+    ->content_like(qr/Kg::Controller::Test/);
+
+  done_testing;
+};
+
+subtest 'list routes' => sub {
+  $t->request(GET '/routes')->code_is(200);
 
   done_testing;
 };

@@ -10,34 +10,13 @@ our $AUTHORITY = 'cpan:bclawsie';
 sub build ($self, %args) {
   my $r = $self->routes;
 
-  $r->add(qw{/}, 'test');
+  $r->add(qw{/}, 'Controller::Test::test');
 
   $r->add(
     '/routes',
     {
       method => 'GET',
-      to     => 'list_routes',
-    }
-  );
-}
-
-sub list_routes ($self) {
-  my @routes = map {
-    {
-      method  => $_->method // qw{*},
-      route   => $_->pattern,
-      handler => ref($_->to) eq 'CODE' ? '(anonymous)' : $_->to,
-    }
-  } grep { not $_->bridge } @{$self->routes->routes};
-
-  return \@routes;
-}
-
-sub test ($self) {
-  $self->template(
-    'test',
-    {
-      name => __PACKAGE__,
+      to     => 'Controller::Status::list_routes',
     }
   );
 }
