@@ -6,7 +6,7 @@ use Kelp::Test ();
 use Test2::V0  qw( done_testing subtest );
 use Kg         ();
 
-my $app = Kg->new(mode => 'test');
+my $app = Kg->new(mode => $ENV{PLACK_ENV} // undef);
 my $t   = Kelp::Test->new(app => $app);
 
 subtest 'test template' => sub {

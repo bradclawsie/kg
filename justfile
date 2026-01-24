@@ -8,6 +8,7 @@ PERL5LIB_LIB  := PERL5LIB_BASE + ":" + PWD / "lib"
 PERLCRITIC    := "perlcritic" + " --profile " + PWD / ".perlcritic"
 PERLIMPORTS   := "perlimports -i --config-file=" + PWD / ".perlimports.toml"
 PERLTIDY      := 'perltidier'
+PLACK_ENV     := 'test'
 YATH          := 'yath'
 
 SCHEMA        := PWD / "sql" / "schema.sql"
@@ -52,7 +53,9 @@ critic:
       find t -name \*.t -print0 | xargs -0 {{ PERLCRITIC }} --theme=tests
 
 daemon:
-    @export PERL5LIB={{ PERL5LIB_LIB }} SCHEMA={{ SCHEMA }};\
+    @export \
+      PERL5LIB={{ PERL5LIB_LIB }} \
+      SCHEMA={{ SCHEMA }};\
       mkdir -p log && mkdir -p db && plackup -E development app.psgi
 
 imports:
@@ -70,7 +73,10 @@ run *CMD:
       {{ CMD }}
 
 test:
-    @export PERL5LIB={{ PERL5LIB_LIB }} SCHEMA={{ SCHEMA }};\
+    @export \
+      PERL5LIB={{ PERL5LIB_LIB }} \
+      PLACK_ENV={{ PLACK_ENV }} \
+      SCHEMA={{ SCHEMA }};\
       find t -name \*.t -print0 | xargs -0 {{ YATH }}
 
 tidy:
@@ -84,5 +90,8 @@ tidy:
 
 # Run a single test; e.g. "just yath t/00-test.t".
 yath TEST:
-    @export PERL5LIB={{ PERL5LIB_LIB }} SCHEMA={{ SCHEMA }};\
+    @export \
+      PERL5LIB={{ PERL5LIB_LIB }} \
+      PLACK_ENV={{ PLACK_ENV }} \
+      SCHEMA={{ SCHEMA }};\
       {{ YATH }} {{ TEST }}
