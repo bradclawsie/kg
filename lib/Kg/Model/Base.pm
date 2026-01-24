@@ -1,17 +1,10 @@
 package Kg::Model::Base;
 use v5.42;
 use strictures 2;
-use Carp                   qw( croak );
 use Types::Common::Numeric qw( PositiveOrZeroInt );
 use Types::UUID            qw( Uuid );
-use Kg::Model::Attribute   qw(
-  $ROLE_ADMIN
-  $ROLE_NORMAL
-  $ROLE_TEST
-  $STATUS_ACTIVE
-  $STATUS_INACTIVE
-  $STATUS_UNCONFIRMED
-);
+use Kg::Model::Attribute   qw( $ROLE_NORMAL $STATUS_UNCONFIRMED );
+use Kg::Type               qw( Role Status );
 
 use Moo::Role;
 
@@ -41,16 +34,8 @@ has insert_order => (
 );
 
 has role => (
-  is  => 'ro',
-  isa => sub ($v) {
-    croak 'bad role' if $v !~ m{
-      ^[
-        $ROLE_NORMAL
-        $ROLE_ADMIN
-        $ROLE_TEST
-      ]$}x;
-    return true;
-  },
+  is       => 'ro',
+  isa      => Role,
   required => false,
   default  => sub { $ROLE_NORMAL },
 );
@@ -71,16 +56,8 @@ has signature => (
 );
 
 has status => (
-  is  => 'rw',
-  isa => sub ($v) {
-    croak 'bad role' if $v !~ m{
-      ^[
-        $STATUS_UNCONFIRMED
-        $STATUS_ACTIVE
-        $STATUS_INACTIVE
-      ]$}x;
-    return true;
-  },
+  is       => 'rw',
+  isa      => Status,
   required => false,
   default  => sub { $STATUS_UNCONFIRMED },
 );

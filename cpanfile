@@ -12,6 +12,7 @@ requires 'Kelp';
 requires 'indirect';
 requires 'List::Util';
 requires 'multidimensional';
+requires 'Math::Random::ISAAC';
 requires 'Moo';
 requires 'Path::Tiny';
 requires 'Perl::Critic';
