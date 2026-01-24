@@ -32,6 +32,8 @@
         },
     },
 
+    api_version => 'v0',
+
     db_file => './db/development.db',
 
     dbi => [
@@ -55,5 +57,7 @@
 
     # ROLE_TEST
     default_role => 3,
+
+    repository_bsae => '/tmp',
 };
 
