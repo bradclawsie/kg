@@ -14,6 +14,8 @@
         },
     },
 
+    api_version => 'v0',
+
     dbi => [
         'dbi:SQLite:dbname=:memory:',
         q{},
@@ -35,5 +37,7 @@
 
     # ROLE_TEST
     default_role => 3,
+
+    repository_base => '/tmp',
 }
 

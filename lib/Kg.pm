@@ -42,10 +42,19 @@ has encryption_key_version => (
   default  => undef,
 );
 
+has signing_key => (
+  is       => 'ro',
+  isa      => Uuid,
+  required => true,
+  default  => Uuid->generator,
+);
+
 sub build ($self, %args) {
 
   # check conf values not implicitly checked by Moo attr construction
-  for my $k (qw( default_role )) {
+  #
+  # see corresponding file in conf/
+  for my $k (qw( api_version default_role repository_base )) {
     croak "conf key $k not set" unless (defined $self->config($k));
   }
 
