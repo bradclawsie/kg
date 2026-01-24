@@ -3,8 +3,7 @@ use v5.42;
 use strictures 2;
 use Carp            qw( croak );
 use DBI             ();
-use Types::Standard qw( CodeRef InstanceOf );
-use Types::UUID     qw( Uuid );
+use Types::Standard qw( InstanceOf );
 
 use parent 'Kelp';
 use Moo;
@@ -23,30 +22,6 @@ has dbh => (
     }
     return $dbh;
   },
-);
-
-has get_key => (
-  is       => 'rw',
-  isa      => CodeRef,
-  required => true,
-  lazy     => true,
-  default  => sub { croak 'get_key not set' },
-);
-
-has encryption_key_version => (
-  is       => 'rw',
-  isa      => Uuid,
-  required => true,
-  lazy     => true,
-  coerce   => 1,
-  default  => undef,
-);
-
-has signing_key => (
-  is       => 'ro',
-  isa      => Uuid,
-  required => true,
-  default  => Uuid->generator,
 );
 
 sub build ($self, %args) {
